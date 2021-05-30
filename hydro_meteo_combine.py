@@ -17,5 +17,6 @@ def hydro_meteo_combine(hydro: pd.DataFrame, meteo: pd.DataFrame) -> pd.DataFram
     hydro = hydro.pivot(index='date', columns='station_id', values='delta_stage_max')
     hydro.columns = ['delta_stage_max_' + str(station_id) for station_id in hydro.columns]
 
-    res = pd.merge(meteo, hydro, left_index=True, right_index=True)
+    res = pd.merge(meteo, hydro, left_index=True, right_index=True).reset_index()
+    res.columns = ['date_local'] + res.columns[1:]
     return res
